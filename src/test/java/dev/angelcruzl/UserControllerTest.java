@@ -1,5 +1,6 @@
 package dev.angelcruzl;
 
+import dev.angelcruzl.shared.GenericResponse;
 import dev.angelcruzl.user.User;
 import dev.angelcruzl.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,12 +46,19 @@ public class UserControllerTest {
     assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
   }
 
-
   @Test
   public void postUser_whenUserIsValid_userSavedToDatabase() {
     User user = createValidUser();
     testRestTemplate.postForEntity(API_1_0_USERS, user, Object.class);
 
     assertThat(userRepository.count()).isEqualTo(1);
+  }
+
+  @Test
+  public void postUser_whenUserIsValid_receiveSuccessMessage() {
+    User user = createValidUser();
+    ResponseEntity<GenericResponse> response = testRestTemplate.postForEntity(API_1_0_USERS, user, GenericResponse.class);
+
+    assertThat(response.getBody().getMessage()).isNotNull();
   }
 }

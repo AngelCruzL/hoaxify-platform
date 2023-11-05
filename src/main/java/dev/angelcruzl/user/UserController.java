@@ -1,5 +1,6 @@
 package dev.angelcruzl.user;
 
+import dev.angelcruzl.shared.GenericResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,7 +12,11 @@ public class UserController {
   UserService userService;
 
   @PostMapping("/api/1.0/users")
-  void createUser(@RequestBody User user) {
+  GenericResponse createUser(@RequestBody User user) {
     userService.save(user);
+    GenericResponse body = new GenericResponse();
+    body.setMessage("User saved successfully");
+    
+    return body;
   }
 }
